@@ -1,0 +1,49 @@
+- Scenario 1
+	Andrea works in Milan and, both because he really cares about climate issues and to 
+	avoid traffic congestions, he usually reach his workplace by bike. Indeed, finding a good spot
+	to park his bicycle is not that easy, as there are often many cars parked very close to the bicycle
+	parkings where Andrea is used to leave his bike, and he is getting frustrated about this. 
+	When he learns about SafeStreets, he decides to immediately download it on his smartphone and to register
+	himself, providing his personal informations and his address, with the intention to report each time when
+	a car is parked too near a bicycle parking, hoping that he will soon be able to leave his bike safely near
+	his workplace.
+
+- Scenario 2
+	Unforntunately Luca's brother recently broke his leg during a football match and he will be confined to a 
+	wheelchair for a few months. One day, when Luca is taking him to hospital for a routine visit, he notices 
+	that the disabled parking where he usually park his car is already busy, so he is forced to look for a parking
+	far away from the hospital. When he finally reaches the hospital, he notices that the car is not showing the
+	badge that allows it to use that spot so, as he is registered to SafeStreets service, he logs into the application,
+	creates a new report, takes a picture of the car's license plate, includes a short description
+	of the issue and sends his report to the system. After some days, he logs again into the application to check
+	if his signalization was verified or not and acknowledges that a traffic ticket was provided to the owner
+	of the car.
+
+- Scenario 3
+	Sara would like to join a friend of her for a snack at a well known cafè in their town lately this afternoon,
+	and as she has been studying the whole day, she would like to reach the place on foot to stretch her legs and
+	relax. But to reach the cafè, she has to cross a road known to be very busy, especially at that time of the day,
+	without traffic lights but with a single crosswalk which might be dangerous as well because in the past years 
+	she sometimes noticed cars parked on it. Sara has recently registered on SafeStreets and she knows that statistics
+	about violations are collected, so she decides to check whether in the last days someone has reported a violation
+	of this kind in that street. Gladly, she notices that nobody has parked a car on the crosswalk for a very long period,
+	so she will enjoy her walk and her brief moment of freedom.
+
+- Scenario 4
+	In the last few months, the citizens of Cologno Monzese have been more and more complaining about the increasing
+	traffic violations occurring in the territory of the municipality. At the moment local authorities aren't able to
+	displace enough resources to catch most violations, so they decide to provide citizens more responsibility and
+	register to the SafeStreets service as Authority. With the help of the citizens and the system, the local police is
+	able to displace patrols in the zones where most violations are reported, issuing many more traffic tickets to 
+	violators (and managing a pretty good income for the municipality income as well). 
+	Soon the authorities, as they note the efficiency of the service, decide that they will exploit the statistics made
+	by SafeStreets about the most egregious offenders, and to stimulate citizens to collaborate in reporting the violations
+	they will give some kind of reward to those who will send more reports during each year (until no one will make violations
+	any more...).
+
+- Scenario 5
+	Francesco, a system manager of SafeStreets, is responsible of collecting the incoming reports from the zone near
+	Magenta. During the last three months, he started receiving many more reports from citizens as well as information from
+	about accidents, sometimes with severely injured people, especially from a main road connecting small town of the zone.
+	So, Francesco decides to highlight the road as dangerous to the local authorities, and also suggests to provide patrols or
+	checkpoints in order to have a better supervision and prevent more accidents from occurring.
