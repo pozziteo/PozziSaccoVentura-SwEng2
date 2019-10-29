@@ -1,0 +1,39 @@
+FUNCTIONAL REQUIREMENTS:
+
+[G1] Allow users to report traffic violations;
+	[R1] The system must be able to distinguish logged users and guests;
+	[R2] The system must be equipped with an internal camera interface to take pictures of vehicles illegally parked;
+	[R3] The system must store reports sent by users in real time;
+	[R4] The system must require information input by the user such as date, time, type of violation, during the filling out process;
+	[R5] The system must require the GPS to be active during the filling out process;
+
+[G2] Allow Citizens to view a history of their past reports;
+	[R1] The system must be able to distinguish every user unambigously;
+	[R2] The system must store information with an association to the user who submitted it;
+	[R3] The system must store information in real time;
+	[R4] The system must be able to retrieve stored information;
+
+[G3] Allow Authorities to access stored data about submitted reports and Citizens to view data about accepted ones;
+	[R1] The system must be able to distinguish between authorities and users;
+	[R2] The system must store information in real time;
+	[R3] The system must be able to retrieve stored information;
+	[R4] The system must be able to distinguish between submitted reports and reports that have been reviewed and accepted by the police;
+
+[G4] Allow Users to highlight areas with high frequency of violations;
+	[R1] The system must be able to access map information;
+	[R2] The system must show the user their local map information;
+	[R3] The system must be able to 
+
+[G5] Allow Users to highlight unsafe areas;
+	[R1] The system must be able to access map information;
+	[R2] The system must show the user their local map information;
+
+[G6] Allow the local Authority to generate traffic tickets;
+	[R1]
+
+[G7] Allow an Authority to link issued traffic tickets to relative Citizens signalizations;
+	
+[G8] Allow Users to visualize statistics posted by system managers;
+	[R1]  
+
+[G9] Allow Users to visualize possible interventions for areas that are deemed unsafe;
