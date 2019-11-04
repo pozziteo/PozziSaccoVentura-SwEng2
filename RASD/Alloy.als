@@ -131,14 +131,27 @@ fact CountAsOne {
 
 --All reportings are pointed out by one user once
 
-fact UserReporsOnce {
+fact UserReportsOnce {
 	all r1 , r2: Reporting | (r1.position = r2.position && r1.photo.licensePlate = r2.photo.licensePlate) => r1.reporter != r2.reporter 
 }
 
+--No different Municipalities receive the same reporting
+
+assert NoDifferentMunicipalitiesTheSameReporting {
+	all m1,m2 : Municipality | no r: Reporting | r in m1.reportings && r in m2.reportings && m1 = m2
+}
+
+check NoDifferentMunicipalitiesTheSameReporting for 3
+
+pred firstOne {
+	#Municipality = 2	
+	#Citizen = 5	
+ 	
+	(all m: Municipality | some c: Citizen | some r: Reporting | r in m.reportings && r.reporter = c)
+}
 
 
-
-
+run firstOne for 2 Municipality
 
 
 
