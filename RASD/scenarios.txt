@@ -47,11 +47,10 @@ Goals - scenarios:
 	displace enough resources to catch most violations, so they decide to provide citizens more responsibility and
 	register to the SafeStreets service as Authority. With the help of the citizens and the system, the local police is
 	able to displace patrols in the zones where most violations are reported, issuing many more traffic tickets to 
-	violators (and managing a pretty good income for the municipality income as well). 
-	Soon the authorities, as they note the efficiency of the service, decide that they will exploit the statistics made
-	by SafeStreets about the most egregious offenders, and to stimulate citizens to collaborate in reporting the violations
-	they will give some kind of reward to those who will send more reports during each year (until no one will make violations
-	any more...).
+	offenders (and managing a pretty good income for the municipality income as well).
+	After some months, the municipality consults the statistics about traffic tickets provided by SafeStreets and notices
+	that citizens are used to park their cars on pavements many times, so the local police decides to increase controls in
+	the areas where this violation occur mostly, in order to make the offenders lose this bad habit.
 
 - Scenario 5 - G6
 	Sara would like to join a friend of her for a snack at a well known cafè in their town lately this afternoon,
