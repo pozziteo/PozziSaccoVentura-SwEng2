@@ -143,15 +143,7 @@ assert NoDifferentMunicipalitiesTheSameReporting {
 
 check NoDifferentMunicipalitiesTheSameReporting for 3
 
-pred firstOne {
-	#Municipality = 2	
-	#Citizen = 5	
- 	
-	(all m: Municipality | some c: Citizen | some r: Reporting | r in m.reportings && r.reporter = c)
-}
 
-
-run firstOne for 2 Municipality
 
 
 
