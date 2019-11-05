@@ -19,10 +19,15 @@ sig Evaluating extends Status {}
 
 sig LicensePlate {}
 
+sig Correspondence {
+	correspondence: Photo -> one LicensePlate
+}
+
 sig Date {}
 sig TypeViolation {}
 sig Photo {
-	licensePlate: one LicensePlate
+	--licensePlate: one LicensePlate
+	correspondence: one Correspondence
 }
 sig Position {}
 sig Time {}
@@ -44,11 +49,17 @@ sig Reporting {
 	position: one Position,
 	status : one Status,
 	ticket: one Boolean
+} { idReporting > 0}
+
+
+sig AcceptedReportings {
+	acceptedReportings : set Reporting
 }
 
 abstract sig User {
 	registration: one Registration
 }
+
 
 
 
@@ -58,13 +69,14 @@ sig Citizen extends User {
 }
 
 sig Municipality extends User {
-	reportings: set Reporting
+	reportings: set Reporting,
+	position : one Position
 }
 
 --All Users have different username
 
 fact DifferentUsernames {
-	all u1, u2: User | (u1 != u2) => u1.registration.username != u2.registration.username
+	all u1, u2: User | (u1 != u2)  => u1.registration.username != u2.registration.username
 }
 
 --All Citizens have different fiscal codes
@@ -112,28 +124,37 @@ fact ReportingStatusFalse {
 --All reportings has different Id
 
 fact DifferentId {
-	all r1, r2: Reporting | (r1 != r2) <=> (r1.idReporting != r2.idReporting)
+	all r1, r2: Reporting | (r1 != r2) => (r1.idReporting != r2.idReporting)
 }
 
 --All reportings with the same reporter, position, time, date and license plate have the same Id
 
 fact SameId {
-	all r1, r2: Reporting | (r1.reporter = r2.reporter && r1.photo.licensePlate = r2.photo.licensePlate && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date) 
+	all r1, r2: Reporting | (r1.reporter = r2.reporter && r1.photo.correspondence = r2.photo.correspondence && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date) 
 	<=> r1.idReporting = r2.idReporting
 }
 
 --All reportings with the same position, time, date and license plate has only one ticket
 
-fact CountAsOne {
-	all r1,r2: Reporting | (r1.idReporting != r2.idReporting && r1.photo.licensePlate = r2.photo.licensePlate && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date)
-	<=> ((r1.ticket = True && r2.ticket = False) || (r1.ticket = False && r2.ticket = True))
+--fact CountAsOne {
+	--all r1,r2: Reporting | (r1.idReporting != r2.idReporting && r1.photo.correspondence = r2.photo.correspondence && r1.position = r2.position && r1.date = r2.date)
+	--<=> ((r1.ticket = True && r2.ticket = False) || (r1.ticket = False && r2.ticket = True))
+--}
+
+--All accepted reportings are in AcceptedReportings' set
+
+fact AcceptedReportingsInSet {
+	all r: Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> r in aR.acceptedReportings
 }
+
+--Da ricontrollare
 
 --All reportings are pointed out by one user once
 
-fact UserReportsOnce {
-	all r1 , r2: Reporting | (r1.position = r2.position && r1.photo.licensePlate = r2.photo.licensePlate) => r1.reporter != r2.reporter 
-}
+--fact UserReportsOnce {
+	--all r1 , r2: Reporting | (r1.position = r2.position && r1.photo.correspondence = r2.photo.correspondence) => r1.reporter != r2.reporter 
+--}
+--Da ricontrollare/eliminare
 
 --No different Municipalities receive the same reporting
 
@@ -141,8 +162,42 @@ assert NoDifferentMunicipalitiesTheSameReporting {
 	all m1,m2 : Municipality | no r: Reporting | r in m1.reportings && r in m2.reportings && m1 = m2
 }
 
-check NoDifferentMunicipalitiesTheSameReporting for 3
+--check NoDifferentMunicipalitiesTheSameReporting for 3
 
+assert Verify {
+	all r : Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> ( r.status = Accepted && r in aR.acceptedReportings)
+}
+
+pred worldOne {
+	#Citizen = 2
+	#Municipality = 1
+	#Reporting = 2
+	#AcceptedReportings = 1
+	#AcceptedReportings.acceptedReportings = 1
+	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Reporting |  r1.reporter = c1 && r2.reporter = c2 &&
+	r1.photo.correspondence = r2.photo.correspondence &&
+	r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reportings &&
+	 r2 in m.reportings && r1 in AcceptedReportings.acceptedReportings && r2  not in AcceptedReportings.acceptedReportings)
+
+}
+
+pred worldTwo {
+
+
+
+
+
+
+
+}
+
+
+
+
+
+--run worldOne for 3
+
+--check Verify 
 
 
 
