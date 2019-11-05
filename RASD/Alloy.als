@@ -69,6 +69,7 @@ sig Citizen extends User {
 }
 
 sig Municipality extends User {
+	acceptedReportings : set AcceptedReportings,
 	reportings: set Reporting,
 	position : one Position
 }
@@ -113,6 +114,12 @@ fact ReportingStatusTrue {
 
 fact ReportingStatusFalse {
 	all r: Reporting | (r.status = Refused)  <=> (r.ticket = False)
+}
+
+--All reportings which are different id has also different photo 
+
+fact DifferentPhoto {
+	all r1,r2: Reporting | (r1.idReporting != r2.idReporting) => (r1.photo ! = r2.photo) 
 }
 
 --All reportings which has status evaluating  has also ticket false
@@ -182,18 +189,19 @@ pred worldOne {
 }
 
 pred worldTwo {
-
-
-
-
-
-
-
+	#Citizen = 1
+	#Municipality = 2
+	#Reporting = 2
+	#AcceptedReportings = 2
+	--#AcceptedReportings.acceptedReportings = 2
+	(one c: Citizen | some disj m1, m2: Municipality | some disj r1,r2: Reporting | some disj ar1, ar2 : AcceptedReportings  |
+	r1 in m1.reportings && r2 in m2.reportings && r1.ticket = True && r2.ticket = True && r1.reporter = c && r2.reporter = c 
+	&& ar1 in m1.acceptedReportings && ar2 in m2.acceptedReportings)
 }
 
 
 
-
+run worldTwo for 3
 
 --run worldOne for 3
 
