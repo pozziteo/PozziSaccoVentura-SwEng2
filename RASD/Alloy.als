@@ -70,7 +70,7 @@ sig Citizen extends User {
 
 sig Municipality extends User {
 	reportings: set Reporting,
-	position : one Position
+	area : some Position
 }
 
 --All Users have different username
@@ -147,6 +147,14 @@ fact AcceptedReportingsInSet {
 	all r: Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> r in aR.acceptedReportings
 }
 
+fact PositionArea {
+	all r: Reporting | one m: Municipality | (r.position in m.area) => (r in m.reportings)
+}
+
+fact DisjAreas {
+	all m1, m2: Municipality | (m1!=m2) => (#{m1.area & m2.area})=0
+}
+
 --Da ricontrollare
 
 --All reportings are pointed out by one user once
@@ -195,10 +203,9 @@ pred worldTwo {
 
 
 
---run worldOne for 3
+run worldOne for 3
 
 --check Verify 
-
 
 
 
