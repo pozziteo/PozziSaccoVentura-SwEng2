@@ -148,11 +148,15 @@ fact AcceptedReportingsInSet {
 }
 
 fact PositionArea {
-	all r: Reporting | one m: Municipality | (r.position in m.area) => (r in m.reportings)
+	all r: Reporting | all m: Municipality | (r.position in m.area) <=> (r in m.reportings)
 }
 
 fact DisjAreas {
-	all m1, m2: Municipality | (m1!=m2) => (#{m1.area & m2.area})=0
+	all disj m1, m2: Municipality | m1.area & m2.area = none
+}
+
+fact ReportBelongsToOneMunicipality {
+	all r: Reporting | one m: Municipality | r in m.reportings
 }
 
 --Da ricontrollare
@@ -172,8 +176,12 @@ assert NoDifferentMunicipalitiesTheSameReporting {
 
 --check NoDifferentMunicipalitiesTheSameReporting for 3
 
-assert Verify {
+assert CheckAcceptedReportings {
 	all r : Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> ( r.status = Accepted && r in aR.acceptedReportings)
+}
+
+assert CheckReportBelongsToOneMunicipality {
+	all r: Reporting | one m: Municipality | r in m.reportings
 }
 
 pred worldOne {
@@ -190,22 +198,21 @@ pred worldOne {
 }
 
 pred worldTwo {
-
-
-
-
-
-
-
+	#Citizen = 1
+	#Municipality = 2
+	#Reporting = 2
+	#AcceptedReportings = 1
+	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Reporting | r1.reporter = c && r2.reporter = c &&
+	r1.position in m1.area && r2.position in m2.area && r1.ticket = True)
 }
 
 
 
+run worldTwo for 3
 
+--run worldOne for 3
 
-run worldOne for 3
-
---check Verify 
+--check CheckReportBelongsToOneMunicipality
 
 
 
