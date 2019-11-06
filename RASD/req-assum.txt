@@ -1,0 +1,43 @@
+[R1] The system must be able to distinguish logged users and guests;
+[R2] The system must require information input by the user, such as type of violation, during the filling out process;
+[R3] The system must inform the user whether their report has been stored successfully or not;
+[R4] The system must ask the user if they want to retry the submission process using the same data that failed being sent, or if they want to cancel it;
+[R5] The system must be able to distinguish every user unambiguously;
+[R6] The system must store information with an association to the user who submitted it;
+[R7] The system must be able to retrieve stored information;
+[R8] The system must allow reports to have only one status at a time (accepted, rejected, to be checked);
+[R9] The system must tell the user whether their report has been accepted, rejected or is still waiting to be checked;
+[R10] The system must be able to distinguish between authorities and users;
+[R11] The system must be able to distinguish between submitted reports and reports that have been reviewed and accepted by the police;
+[R12] The system must anonymize data shown to regular users (citizens), that is hide information about the vehicles that were parked illegally and about who submitted a particular report; in other words, data about reports that is shown to users must only contain the type of violation, date, time and position;
+[R13] The system must show the full data about a report to authorities;
+[R14] An authority must be able to submit reports about accidents;
+[R15] The system must be able to access map information;
+[R16] The system must show the user their local map information;
+[R17] The system must show the user possible solutions for unsafe areas, if there are any;
+[R18] The system must allow system managers to edit the status of an area as unsafe and the other way around;
+[R19] An authority must be able to generate a traffic ticket from a report;
+[R20] The system must offer the possibility to generate a traffic ticket only to reports which has the status of accepted;
+[R21] The system must allow Authorities to know which Citizen sent each report;
+[R22] The system must be able to compute meaningful statistics on reports about each kind of violation in which a traffic ticket has been generated;
+[R23] The system must make data about statistics visible to all users;
+[R24] The system must allow system managers to suggest interventions for unsafe areas;
+[R25] The system must show the user possible solutions for unsafe areas, if there are any;
+[R26] The system must make data about suggested interventions visible to all users;
+
+
+
+
+[D1] Each User is unique;
+[D2] Users that register under the Authorities category are employees of the municipality;
+[D3] A Citizen sends a report about a violation when he notices it;
+[D4] Information about date and time of the violation corresponds to the date and time when the report is sent;
+[D5] Information about position is collected through GPS;
+[D6] Picture of violations are taken at the moment and are not inserted in a second time or from already saved pictures;
+[D7] Each Citizen reports a certain violation once;
+[D8] Authorities have tools for assessing if a violation included in a report is an actual violation or not;
+[D9] Authorities generate traffic tickets only for actual violations;
+[D10] Authorities are able to find the owner of the vehicle by the license plate, which is unique to each car vehicle;
+[D11] Authorities report accidents that really occurred;
+[D12] Authorities report accidents occurred in their territory;
+[D13] Suggested interventions are always meaningful and reliable and may avoid future violations;
