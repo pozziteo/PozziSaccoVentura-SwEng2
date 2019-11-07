@@ -159,6 +159,12 @@ fact ReportBelongsToOneMunicipality {
 	all r: Reporting | one m: Municipality | r in m.reportings
 }
 
+fact DifferentIdDifferentPhoto {
+	all r1,r2: Reporting | (r1.idReporting != r2.idReporting) <=> (r1.photo != r2.photo)
+}
+
+
+
 --Da ricontrollare
 
 --All reportings are pointed out by one user once
@@ -203,7 +209,7 @@ pred worldTwo {
 	#Reporting = 2
 	#AcceptedReportings = 1
 	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Reporting | r1.reporter = c && r2.reporter = c &&
-	r1.position in m1.area && r2.position in m2.area && r1.ticket = True)
+	r1.position in m1.area && r2.position in m2.area && r1.ticket = True && r1.photo.correspondence != r2.photo.correspondence)
 }
 
 
