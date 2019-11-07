@@ -4,6 +4,8 @@ sig Password {}
 
 sig FiscalCode {}
 
+sig Intervention {}
+
 sig Registration {
 	username: one Username,
 	password: one Password
@@ -19,20 +21,22 @@ sig Evaluating extends Status {}
 
 sig LicensePlate {}
 
-sig Correspondence {
-	correspondence: Photo -> one LicensePlate
+sig Date {}
+
+sig TypeViolation {}
+
+sig Photo {
 }
 
-sig Date {}
-sig TypeViolation {}
-sig Photo {
-	--licensePlate: one LicensePlate
-	correspondence: one Correspondence
-}
 sig Position {}
+
 sig Time {}
 
+sig HighFrequencyViolationsArea extends Position {}
 
+sig UnsafeArea extends Position {
+	possibleSolutions: set Intervention
+}
 
 abstract sig Boolean {}
 
@@ -48,12 +52,15 @@ sig Reporting {
 	photo: one Photo,
 	position: one Position,
 	status : one Status,
+	correspondence: one LicensePlate,
 	ticket: one Boolean
-} { idReporting > 0}
+} {	
+	idReporting > 0	
+}
 
 
 sig AcceptedReportings {
-	acceptedReportings : set Reporting
+	acceptedReportings: set Reporting
 }
 
 abstract sig User {
@@ -65,8 +72,13 @@ sig Citizen extends User {
 	fiscalCode: one FiscalCode 
 }
 
+sig Accident {
+	position: one Position
+}
+
 sig Municipality extends User {
 	reportings: set Reporting,
+	accidents: set Accident,
 	area: some Position
 }
 
@@ -127,14 +139,14 @@ fact DifferentId {
 --All reportings with the same reporter, position, time, date and license plate have the same Id
 
 fact SameId {
-	all r1, r2: Reporting | (r1.reporter = r2.reporter && r1.photo.correspondence = r2.photo.correspondence && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date) 
+	all r1, r2: Reporting | (r1.reporter = r2.reporter && r1.correspondence = r2.correspondence && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date) 
 	<=> r1.idReporting = r2.idReporting
 }
 
 --All accepted reportings are in AcceptedReportings' set
 
 fact AcceptedReportingsInSet {
-	all r: Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> r in aR.acceptedReportings
+	all r: Reporting | (r.ticket = True) <=> r in AcceptedReportings.acceptedReportings
 }
 
 fact PositionArea {
@@ -153,16 +165,17 @@ fact DifferentIdDifferentPhoto {
 	all r1,r2: Reporting | (r1.idReporting != r2.idReporting) <=> (r1.photo != r2.photo)
 }
 
+fact AccidentsBelongToMunicipalitiesOfSameArea {
+	all a: Accident | all m: Municipality | (a in m.accidents) <=> (a.position in m.area)
+}
 
+fact AreasWithManyAccidentsAreUnsafe {
+	all m: Municipality | all p: Position | (p in m.area && #{a: Accident | a.position = p} >= 5) <=> p = UnsafeArea
+}
 
---Da ricontrollare
-
---All reportings are pointed out by one user once
-
---fact UserReportsOnce {
-	--all r1 , r2: Reporting | (r1.position = r2.position && r1.photo.correspondence = r2.photo.correspondence) => r1.reporter != r2.reporter 
---}
---Da ricontrollare/eliminare
+fact AreasWithManyViolationsAreHFA {
+	all m: Municipality | all p: Position | (p in m.area && #{r: Reporting | r.position = p} >= 5) <=> p = HighFrequencyViolationsArea
+}
 
 --No different Municipalities receive the same reporting
 
@@ -174,6 +187,13 @@ assert CheckAcceptedReportings {
 	all r : Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> ( r.status = Accepted && r in aR.acceptedReportings)
 }
 
+pred show {
+	#AcceptedReportings = 1
+	#Citizen = 1
+	#Municipality = 1
+	#Intervention = 1
+}
+
 pred worldOne {
 	#Citizen = 2
 	#Municipality = 1
@@ -181,7 +201,7 @@ pred worldOne {
 	#AcceptedReportings = 1
 	#AcceptedReportings.acceptedReportings = 1
 	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Reporting |  r1.reporter = c1 && r2.reporter = c2 &&
-	r1.photo.correspondence = r2.photo.correspondence &&
+	r1.correspondence = r2.correspondence &&
 	r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reportings &&
 	 r2 in m.reportings && r1 in AcceptedReportings.acceptedReportings && r2  not in AcceptedReportings.acceptedReportings)
 
@@ -190,28 +210,21 @@ pred worldOne {
 pred worldTwo {
 	#Citizen = 1
 	#Municipality = 2
+	#Municipality.area = 3
 	#Reporting = 2
 	#AcceptedReportings = 1
 	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Reporting | r1.reporter = c && r2.reporter = c &&
-	r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.photo.correspondence != r2.photo.correspondence)
-}
-
-pred worldThree {
-	#Citizen = 2
-	#Municipality = 1
-	#Reporting = 3
-	#AcceptedReportings = 1
-	#AcceptedReportings.acceptedReportings = 1
-	(one r: Reporting | r in AcceptedReportings.acceptedReportings)
+	r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.correspondence != r2.correspondence)
 }
 
 --check NoDifferentMunicipalitiesTheSameReporting
 
+--run show for 3
+
 --run worldTwo for 3
 
---run worldOne for 3
+run worldOne for 3
 
-run worldThree for 3
 
 
 
