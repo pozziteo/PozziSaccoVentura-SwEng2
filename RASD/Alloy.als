@@ -149,21 +149,31 @@ fact AcceptedReportingsInSet {
 	all r: Reporting | (r.ticket = True) <=> r in AcceptedReportings.acceptedReportings
 }
 
+--All reportings' positions belong to one Municipality's area (All m:Municipality o one m:Municipality?) 
+
 fact PositionArea {
 	all r: Reporting | all m: Municipality | (r.position in m.area) <=> (r in m.reportings)
 }
+
+--Different Municipalities has different areas with no positions in common
 
 fact DisjAreas {
 	all disj m1, m2: Municipality | m1.area & m2.area = none
 }
 
+--All reportings refer to only one Municipality
+
 fact ReportBelongsToOneMunicipality {
 	all r: Reporting | one m: Municipality | r in m.reportings
 }
 
+--All reportings with different Id has also different photo
+
 fact DifferentIdDifferentPhoto {
 	all r1,r2: Reporting | (r1.idReporting != r2.idReporting) <=> (r1.photo != r2.photo)
 }
+
+
 
 fact AccidentsBelongToMunicipalitiesOfSameArea {
 	all a: Accident | all m: Municipality | (a in m.accidents) <=> (a.position in m.area)
@@ -215,6 +225,12 @@ pred worldTwo {
 	#AcceptedReportings = 1
 	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Reporting | r1.reporter = c && r2.reporter = c &&
 	r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.correspondence != r2.correspondence)
+}
+
+pred worldThree {
+	#Position = 2
+	#Accident = 5
+	
 }
 
 --check NoDifferentMunicipalitiesTheSameReporting
