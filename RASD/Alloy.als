@@ -87,7 +87,6 @@ sig AcceptedReports {
 	acceptedReports: set Report
 }
 
-	Facts
 
 --All Users have different usernames
 
@@ -210,7 +209,6 @@ fact AreasWithManyViolationsAreHFA {
 	all p: Position | (#{r: Report | r.position = p} >= 5) <=> (one h: HighFrequencyViolationsArea | p = h)
 }
 
-	Assertions
 
 assert CheckNoDifferentMunicipalitiesHaveSameReports {
 	all disj m1,m2: Municipality | no r: Report | r in m1.reports && r in m2.reports
@@ -228,7 +226,6 @@ assert CheckUnsafeAreas {
 assert CheckHFVAreas {
 	no h: HighFrequencyViolationsArea | #{r: Report | r.position = h} < 5
 }
-	Predicates
 
 pred show {
 	#Report = 1
@@ -257,7 +254,7 @@ pred worldTwo {
 }
 
 
-run show for 3
+--run show for 3
 
 run worldTwo for 3
 
