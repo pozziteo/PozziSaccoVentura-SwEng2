@@ -4,63 +4,9 @@ sig Password {}
 
 sig FiscalCode {}
 
-sig Intervention {}
-
 sig Registration {
 	username: one Username,
 	password: one Password
-}
-
-abstract sig Status {}
-
-sig Accepted extends Status {}
-
-sig Refused extends Status {}
-
-sig Evaluating extends Status {}
-
-sig LicensePlate {}
-
-sig Date {}
-
-sig TypeViolation {}
-
-sig Photo {
-}
-
-sig Position {}
-
-sig Time {}
-
-sig HighFrequencyViolationsArea extends Position {}
-
-sig UnsafeArea extends Position {
-	possibleSolutions: set Intervention
-}
-
-abstract sig Boolean {}
-
-sig True extends Boolean {}
-sig False extends Boolean {}
-
-sig Reporting {
-	idReporting: one Int,
-	reporter: one Citizen,
-	date: one Date,
-	time: one Time,
-	typeViolation: one TypeViolation,
-	photo: one Photo,
-	position: one Position,
-	status : one Status,
-	correspondence: one LicensePlate,
-	ticket: one Boolean
-} {	
-	idReporting > 0	
-}
-
-
-sig AcceptedReportings {
-	acceptedReportings: set Reporting
 }
 
 abstract sig User {
@@ -68,21 +14,86 @@ abstract sig User {
 }
 
 sig Citizen extends User {
-	reportings: set Reporting,
+	reports: set Report,
 	fiscalCode: one FiscalCode 
+}
+
+sig Municipality extends User {
+	reports: set Report,
+	accidents: set Accident,
+	area: some Position
+}
+
+
+
+
+
+
+
+
+--Signatures concerning reports
+
+abstract sig Status {}
+
+sig Accepted extends Status {}
+sig Refused extends Status {}
+sig Evaluating extends Status {}
+
+sig Intervention {}
+
+sig LicensePlate {}
+
+sig Date {}
+
+sig ViolationType {}
+
+sig Photo {}
+
+sig Time {}
+
+sig Position {}
+
+sig HighFrequencyViolationsArea extends Position {}
+
+sig UnsafeArea extends Position {
+	possibleSolutions: set Intervention
 }
 
 sig Accident {
 	position: one Position
 }
 
-sig Municipality extends User {
-	reportings: set Reporting,
-	accidents: set Accident,
-	area: some Position
+abstract sig Boolean {}
+
+sig True extends Boolean {}
+sig False extends Boolean {}
+
+
+
+
+
+sig Report {
+	idReport: one Int,
+	reporter: one Citizen,
+	date: one Date,
+	time: one Time,
+	violationType: one ViolationType,
+	photo: one Photo,
+	position: one Position,
+	status : one Status,
+	correspondence: one LicensePlate,
+	ticket: one Boolean
+} {	
+	idReport > 0	
 }
 
---All Users have different username
+sig AcceptedReports {
+	acceptedReports: set Report
+}
+
+
+
+--All Users have different usernames
 
 fact DifferentUsernames {
 	all disj u1, u2: User | u1.registration.username != u2.registration.username
@@ -91,114 +102,128 @@ fact DifferentUsernames {
 --All Citizens have different fiscal codes
 
 fact DifferentFiscalCodes {
-	all c1,c2: Citizen | (c1!=c2) => c1.fiscalCode != c2.fiscalCode
+	all disj c1,c2: Citizen | c1.fiscalCode != c2.fiscalCode
 }
 
---All Usernames matches one registration
+--All Usernames match one Registration
 
-fact UsernamesMatchesOneRegistration {
+fact UsernamesMatchOneRegistration {
 	all u: Username | one r: Registration | u in r.username
 }
 
---All reportings made by citizens are in the Municipality list of reportings
 
-fact ReportingsToMunicipalityList {
-	all r: Reporting| one m: Municipality | one c: Citizen | r in m.reportings && r in c.reportings
+
+--All Reports made by Citizens are in the list of Reports of the corresponding Municipality
+
+fact ReportsToMunicipalityList {
+	all r: Report| one m: Municipality | one c: Citizen | r in m.reports && r in c.reports
 }
 
---All reportings has a citizen registered in the system
+--All Reports are made by a Citizen registered in the system
 
-fact ReportingsHasCitizenRegistered {
-	all r: Reporting | one r2: Registration | r.reporter.registration = r2
+fact ReportsHaveRegisteredCitizen {
+	all r: Report | one r2: Registration | r.reporter.registration = r2
 }
 
---All reportings which has status accepted has also ticket true
+--All Reports which are accepted have a ticket
 
-fact ReportingStatusTrue {
-	all r: Reporting | ( r.status = Accepted)  <=>  (r.ticket = True)
+fact AcceptedReportsHaveTicketTrue {
+	all r: Report | ( r.status = Accepted)  <=>  (r.ticket = True)
 }
 
---All reportings which has status refused has also ticket false
+--All Reports which are refused don’t have a ticket
 
-fact ReportingStatusFalse {
-	all r: Reporting | (r.status = Refused)  => (r.ticket = False)
+fact RefusedReportsHaveTicketFalse {
+	all r: Report | (r.status = Refused)  => (r.ticket = False)
 }
 
---All reportings which has status evaluating  has also ticket false
+--All Reports which are being evaluated don’t have a ticket
 
- fact ReportingStatusEvaluating {
-	all r: Reporting | (r.status = Evaluating)  => (r.ticket = False)
+ fact EvaluatingReportsHaveTicketFalse {
+	all r: Report | (r.status = Evaluating)  => (r.ticket = False)
 }
 
---All reportings has different Id
+--All Reports have a different ID
 
-fact DifferentId {
-	all r1, r2: Reporting | (r1 != r2) => (r1.idReporting != r2.idReporting)
+fact DifferentReportId {
+	all disj r1, r2: Report | r1.idReport != r2.idReport
 }
 
---All reportings with the same reporter, position, time, date and license plate have the same Id
 
-fact SameId {
-	all r1, r2: Reporting | (r1.reporter = r2.reporter && r1.correspondence = r2.correspondence && r1.position = r2.position && r1.time = r2.time && r1.date = r2.date) 
-	<=> r1.idReporting = r2.idReporting
+
+--All Reports with the same Reporter, Position, Time, Date and LicensePlate have the same ID
+
+fact SameReportId {
+	all r1, r2: Report | (r1.reporter = r2.reporter && 
+r1.correspondence = r2.correspondence && r1.position = r2.position && 
+r1.time = r2.time && r1.date = r2.date) <=> r1.idReport = r2.idReport
 }
 
---All accepted reportings are in AcceptedReportings' set
+--All accepted Reports are in the set of AcceptedReports
 
-fact AcceptedReportingsInSet {
-	all r: Reporting | (r.ticket = True) <=> r in AcceptedReportings.acceptedReportings
+fact AcceptedReportsInSet {
+	all r: Report | (r.ticket = True) <=> r in AcceptedReports.acceptedReports
 }
 
---All reportings' positions belong to one Municipality's area (All m:Municipality o one m:Municipality?) 
+--All Report positions belong to the area of one Municipality
 
-fact PositionArea {
-	all r: Reporting | all m: Municipality | (r.position in m.area) <=> (r in m.reportings)
+fact PositionBelongsToOneArea {
+	all r: Report | all m: Municipality | (r.position in m.area) <=> (r in m.reports)
 }
 
---Different Municipalities has different areas with no positions in common
+--Different Municipalities have different areas with no positions in common
 
 fact DisjAreas {
 	all disj m1, m2: Municipality | m1.area & m2.area = none
 }
 
---All reportings refer to only one Municipality
+--All Reports are in the list of only one Municipality
 
 fact ReportBelongsToOneMunicipality {
-	all r: Reporting | one m: Municipality | r in m.reportings
+	all r: Report | one m: Municipality | r in m.reports
 }
 
---All reportings with different Id has also different photo
+--All Reports with different IDs have different photos
 
 fact DifferentIdDifferentPhoto {
-	all r1,r2: Reporting | (r1.idReporting != r2.idReporting) <=> (r1.photo != r2.photo)
+	all r1,r2: Report | (r1.idReport != r2.idReport) <=> (r1.photo != r2.photo)
 }
 
 
+--All Accidents are in the list of the Municipality of their area
 
 fact AccidentsBelongToMunicipalitiesOfSameArea {
 	all a: Accident | all m: Municipality | (a in m.accidents) <=> (a.position in m.area)
 }
 
+--All positions with more than one accident are marked as unsafe
+
 fact AreasWithManyAccidentsAreUnsafe {
-	all m: Municipality | all p: Position | (p in m.area && #{a: Accident | a.position = p} >= 5) <=> p = UnsafeArea
+	all m: Municipality | all p: Position | (p in m.area && #{a: Accident | a.position = p} >= 2) <=> p = UnsafeArea
 }
+
+--All positions with more than 4 violations are marked as high frequency violations areas
 
 fact AreasWithManyViolationsAreHFA {
-	all m: Municipality | all p: Position | (p in m.area && #{r: Reporting | r.position = p} >= 5) <=> p = HighFrequencyViolationsArea
+	all m: Municipality | all p: Position | (p in m.area && #{r: Report | r.position = p} >= 5) <=> p = HighFrequencyViolationsArea
 }
 
---No different Municipalities receive the same reporting
 
-assert NoDifferentMunicipalitiesTheSameReporting {
-	all disj m1,m2 : Municipality | no r: Reporting | r in m1.reportings && r in m2.reportings
+
+assert CheckNoDifferentMunicipalitiesHaveSameReports {
+	all disj m1,m2: Municipality | no r: Report | r in m1.reports && r in m2.reports
 }
 
-assert CheckAcceptedReportings {
-	all r : Reporting | all aR: AcceptedReportings | (r.ticket = True) <=> ( r.status = Accepted && r in aR.acceptedReportings)
+assert CheckAcceptedReports {
+	all r: Report | (r.ticket = True) <=> ( r.status = Accepted 
+&& r in AcceptedReports.acceptedReports)
 }
+
+
+
 
 pred show {
-	#AcceptedReportings = 1
+	#AcceptedReports = 1
 	#Citizen = 1
 	#Municipality = 1
 	#Intervention = 1
@@ -207,13 +232,13 @@ pred show {
 pred worldOne {
 	#Citizen = 2
 	#Municipality = 1
-	#Reporting = 2
-	#AcceptedReportings = 1
-	#AcceptedReportings.acceptedReportings = 1
-	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Reporting |  r1.reporter = c1 && r2.reporter = c2 &&
+	#Report = 2
+	#AcceptedReports = 1
+	#AcceptedReports.acceptedReports = 1
+	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Report |  r1.reporter = c1 && r2.reporter = c2 &&
 	r1.correspondence = r2.correspondence &&
-	r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reportings &&
-	 r2 in m.reportings && r1 in AcceptedReportings.acceptedReportings && r2  not in AcceptedReportings.acceptedReportings)
+	r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reports &&
+	 r2 in m.reports && r1 in AcceptedReports.acceptedReports && r2  not in AcceptedReports.acceptedReports)
 
 }
 
@@ -221,9 +246,9 @@ pred worldTwo {
 	#Citizen = 1
 	#Municipality = 2
 	#Municipality.area = 3
-	#Reporting = 2
-	#AcceptedReportings = 1
-	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Reporting | r1.reporter = c && r2.reporter = c &&
+	#Report = 2
+	#AcceptedReports = 1
+	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Report | r1.reporter = c && r2.reporter = c &&
 	r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.correspondence != r2.correspondence)
 }
 
@@ -232,6 +257,8 @@ pred worldThree {
 	#Accident = 5
 	
 }
+
+check CheckAcceptedReports
 
 --check NoDifferentMunicipalitiesTheSameReporting
 
