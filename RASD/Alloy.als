@@ -68,10 +68,6 @@ abstract sig Boolean {}
 sig True extends Boolean {}
 sig False extends Boolean {}
 
-
-
-
-
 sig Report {
 	idReport: one Int,
 	reporter: one Citizen,
@@ -91,7 +87,7 @@ sig AcceptedReports {
 	acceptedReports: set Report
 }
 
-
+	Facts
 
 --All Users have different usernames
 
@@ -111,8 +107,6 @@ fact UsernamesMatchOneRegistration {
 	all u: Username | one r: Registration | u in r.username
 }
 
-
-
 --All Reports made by Citizens are in the list of Reports of the corresponding Municipality
 
 fact ReportsToMunicipalityList {
@@ -123,6 +117,12 @@ fact ReportsToMunicipalityList {
 
 fact ReportsHaveRegisteredCitizen {
 	all r: Report | one r2: Registration | r.reporter.registration = r2
+}
+
+-- All Citizens have all their Reports in their list of Reports
+
+fact CitizensHaveTheirReports {
+	all c: Citizen | all r: Report | (r.reporter = c) <=> (r in c.reports)
 }
 
 --All Reports which are accepted have a ticket
@@ -148,6 +148,7 @@ fact RefusedReportsHaveTicketFalse {
 fact DifferentReportId {
 	all disj r1, r2: Report | r1.idReport != r2.idReport
 }
+
 
 
 
@@ -190,6 +191,7 @@ fact DifferentIdDifferentPhoto {
 }
 
 
+
 --All Accidents are in the list of the Municipality of their area
 
 fact AccidentsBelongToMunicipalitiesOfSameArea {
@@ -199,16 +201,16 @@ fact AccidentsBelongToMunicipalitiesOfSameArea {
 --All positions with more than one accident are marked as unsafe
 
 fact AreasWithManyAccidentsAreUnsafe {
-	all m: Municipality | all p: Position | (p in m.area && #{a: Accident | a.position = p} >= 2) <=> p = UnsafeArea
+	all p: Position | (#{a: Accident | a.position = p} >= 2) <=> (one u: UnsafeArea | p = u)
 }
 
 --All positions with more than 4 violations are marked as high frequency violations areas
 
 fact AreasWithManyViolationsAreHFA {
-	all m: Municipality | all p: Position | (p in m.area && #{r: Report | r.position = p} >= 5) <=> p = HighFrequencyViolationsArea
+	all p: Position | (#{r: Report | r.position = p} >= 5) <=> (one h: HighFrequencyViolationsArea | p = h)
 }
 
-
+	Assertions
 
 assert CheckNoDifferentMunicipalitiesHaveSameReports {
 	all disj m1,m2: Municipality | no r: Report | r in m1.reports && r in m2.reports
@@ -219,14 +221,20 @@ assert CheckAcceptedReports {
 && r in AcceptedReports.acceptedReports)
 }
 
+assert CheckUnsafeAreas {
+	no a: UnsafeArea | #{ac: Accident | ac.position = a} < 2
+}
 
-
+assert CheckHFVAreas {
+	no h: HighFrequencyViolationsArea | #{r: Report | r.position = h} < 5
+}
+	Predicates
 
 pred show {
-	#AcceptedReports = 1
+	#Report = 1
 	#Citizen = 1
 	#Municipality = 1
-	#Intervention = 1
+	#AcceptedReports = 1
 }
 
 pred worldOne {
@@ -235,10 +243,7 @@ pred worldOne {
 	#Report = 2
 	#AcceptedReports = 1
 	#AcceptedReports.acceptedReports = 1
-	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Report |  r1.reporter = c1 && r2.reporter = c2 &&
-	r1.correspondence = r2.correspondence &&
-	r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reports &&
-	 r2 in m.reports && r1 in AcceptedReports.acceptedReports && r2  not in AcceptedReports.acceptedReports)
+	(some disj c1, c2: Citizen | one m: Municipality | some disj r1,r2: Report |  r1.reporter = c1 && r2.reporter = c2 && r1.correspondence = r2.correspondence && r1.position != r2.position && r1.date = r2.date && r1.time != r2.time && r1 in m.reports && r2 in m.reports && r1 in AcceptedReports.acceptedReports && r2  not in AcceptedReports.acceptedReports)
 
 }
 
@@ -248,23 +253,13 @@ pred worldTwo {
 	#Municipality.area = 3
 	#Report = 2
 	#AcceptedReports = 1
-	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Report | r1.reporter = c && r2.reporter = c &&
-	r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.correspondence != r2.correspondence)
+	(one c: Citizen | some disj m1, m2: Municipality | some disj r1, r2: Report | r1.reporter = c && r2.reporter = c && r1.position in m1.area && r2.position in m2.area && r1.status = Accepted && r2.ticket = False && r1.correspondence != r2.correspondence)
 }
 
-pred worldThree {
-	#Position = 2
-	#Accident = 5
-	
-}
 
-check CheckAcceptedReports
+run show for 3
 
---check NoDifferentMunicipalitiesTheSameReporting
-
---run show for 3
-
---run worldTwo for 3
+run worldTwo for 3
 
 run worldOne for 3
 
