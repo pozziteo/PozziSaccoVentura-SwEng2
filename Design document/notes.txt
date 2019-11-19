@@ -1,0 +1,15 @@
+- three-tier type 4: lighten burden client-side
+
+
+components:
+1- MobileApp
+2- WebApp
+3- Router
+4- AuthenticationManager
+5- ReportManager
+6- SystemManagerInterface
+7- AreaManager
+8- StatisticsProvider
+9- PictureAnalyzer
+10- TrafficTicketGenerator
+
