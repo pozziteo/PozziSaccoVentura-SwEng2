@@ -6,7 +6,7 @@
 [R6] The system must be able to retrieve stored information;
 [R7] The system must allow reports to have only one status at a time (accepted, rejected, to be checked);
 [R8] The system must tell the user whether their report has been accepted, rejected or is still waiting to be checked;
-[R9] The system must be able to distinguish between authorities and users;
+[R9] The system must be able to distinguish between authorities and citizens;
 [R10] The system must be able to distinguish between submitted reports and reports that have been reviewed and accepted by the police;
 [R11] The system must anonymize data shown to regular users (citizens), that is hide information about the vehicles that were parked illegally and about who submitted a particular report; in other words, data about reports that is shown to users must only contain the type of violation, date, time and position;
 [R12] The system must show the full data about a report to authorities;
