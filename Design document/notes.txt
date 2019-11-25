@@ -13,69 +13,70 @@ components:
 12- PictureAnalyzer
 13- TrafficTicketGenerator
 
-requirements traceability: (add requirement about registering and analyzing pictures?)
+requirements traceability:
 
-[Rx] The system must allow new users to sign up by providing personal/mandatory information;
+[R1] The system must allow new users to sign up by providing personal/mandatory information;
 	- authentication manager
-[Rx] The system must be able to authenticate users;
+[R2] The system must be able to authenticate registered users;
 	- authentication manager
-[Rx] The system must be able to analyze pictures that are being submitted in a report and recognize whether the license plate is readable/present or not;
+[R4] The system must be able to analyze pictures that are being submitted in a report and recognize whether the license plate is readable/present or not;
 	- picture analyzer
 
-[R1] The citizen must be able to insert relevant data about violations, such as type of violation, during the filling out process;
-	- authentication manager
-[R2] The system must inform the user whether their report has been stored successfully or not;
+[R3] The citizen must be able to insert relevant data about violations, such as type of violation, during the filling out process;
+	- citizen web app
+[R5] The system must inform the user whether their report has been stored successfully or not;
 	- report manager
-[R3] The system must ask the user if they want to retry the submission process using the same data that failed being sent, or if they want to cancel it;
-	- mobile app
-[R4] The system must be able to distinguish every user unambiguously;
+[R6] The system must ask the user if they want to retry the submission process using the same data that failed being sent, or if they want to cancel it;
+	- citizen mobile app
+	- authority web app
+[R7] The system must be able to distinguish every user unambiguously;
 	- authentication manager
-[R5] The system must store information with an association to the user who submitted it;
+[R8] The system must store information with an association to the user who submitted it;
 	- report manager/authentication manager
-[R6] The system must be able to retrieve stored information;
+[R9] The system must be able to retrieve stored information;
 	- report manager/authentication manager
-[R7] The system must allow reports to have only one status at a time (accepted, rejected, to be checked);
+[R10] The system must allow reports to have only one status at a time (accepted, rejected, to be checked);
 	- report manager
-[R8] The system must tell the user whether their report has been accepted, rejected or is still waiting to be checked;
+[R11] The system must tell the user whether their report has been accepted, rejected or is still waiting to be checked;
 	- authentication manager
-	- report manager
-[R9] The system must be able to distinguish between authorities and citizens;
+	- citizen app
+[R12] The system must be able to distinguish between authorities and citizens;
 	- auth manager
-[R10] The system must be able to distinguish between submitted reports and reports that have been reviewed and accepted by the police;
+[R13] The system must be able to distinguish between submitted reports and reports that have been reviewed and accepted by the police;
 	- report manager
-[R11] The system must anonymize data shown to regular users (citizens), that is hide information about the vehicles that were parked illegally and about who submitted a particular report; in other words, data about reports that is shown to users must only contain the type of violation, date, time and position;
+[R14] The system must anonymize data shown to regular users (citizens), that is hide information about the vehicles that were parked illegally and about who submitted a particular report; in other words, data about reports that is shown to users must only contain the type of violation, date, time and position;
 	- (authentication manager)
 	- statistics manager
-[R12] The system must show the full data about a report to authorities;
+[R15] The system must show the full data about a report to authorities;
 	- authentication manager
-[R13] An authority must be able to submit reports about accidents;
+[R16] An authority must be able to submit reports about accidents;
 	- authentication manager
-[R14] An authority must be able to insert relevant information about the occurred accident, such as location and injured people; (contained in R13?)
+[R17] An authority must be able to insert relevant information about the occurred accident, such as location and injured people; (contained in R16?)
 	- authentication manager
-[R15] The system must be able to access map information;
+[R18] The system must be able to access map information;
 	- area manager
-[R16] The system must show the user their local map information;
+[R19] The system must show the user their local map information;
 	- area manager
-[R17] The system must show the user possible solutions for unsafe areas, if there are any;
+[R20] The system must show the user possible solutions for unsafe areas, if there are any;
 	- authentication manager
 	- area manager
-[R18] The system must allow system managers to edit the status of an area as unsafe and the other way around;
+[R21] The system must allow system managers to edit the status of an area as unsafe and the other way around;
 	- system manager interface
-[R19] An authority must be able to generate a traffic ticket from a report;
+[R22] An authority must be able to generate a traffic ticket from a report;
 	- traffic ticket generator
-[R20] The system must offer the possibility to generate a traffic ticket only to reports which has the status of accepted;
+[R23] The system must offer the possibility to generate a traffic ticket only to reports which has the status of accepted;
 	- report manager
 	- traffic ticket generator
-[R21] The system must allow Authorities to know which Citizen sent each report;
+[R24] The system must allow Authorities to know which Citizen sent each report;
 	- report manager
 	- auth manager
-[R22] The system must be able to compute meaningful statistics on reports about each kind of violation in which a traffic ticket has been generated;
+[R25] The system must be able to compute meaningful statistics on reports about each kind of violation in which a traffic ticket has been generated;
 	- statistics provider
-[R23] The system must make data about statistics visible to all users;
+[R26] The system must make data about statistics visible to all users;
 	- authentication manager
-[R24] The system must allow system managers to suggest interventions for unsafe areas;
+[R27] The system must allow system managers to suggest interventions for unsafe areas;
 	- sys manager interface
-[R25] The system must make data about suggested interventions visible to all users;
+[R28] The system must make data about suggested interventions visible to all users;
 	- authentication manager
 
 
