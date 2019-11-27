@@ -3,15 +3,15 @@ components:
 2- CitizenWebApp
 3- AuthorityMobileApp
 4- AuthorityWebApp
-5- AdminApp
+5- AdministratorApp
 6- Router
 7- AuthenticationManager
 8- ReportManager
-9- SystemManagerInterface (?)
-10- AreaManager
-11- StatisticsProvider
-12- PictureAnalyzer
-13- TrafficTicketGenerator
+9- AreaManager
+10- StatisticsProvider
+11- PictureAnalyzer
+12- TrafficTicketGenerator
+13- SystemManagerInterface
 
 requirements traceability:
 
