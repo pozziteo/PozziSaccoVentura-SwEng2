@@ -79,4 +79,41 @@ requirements traceability:
 [R28] The system must make data about suggested interventions visible to all users;
 	- authentication manager
 
+FUNCTIONALITIES:
+
+CitizenMobileApp:
+	- authentication OK
+	- report violation OK
+	- view unsafe areas OK
+	- view areas with many violations OK
+	- view reports history OK
+	- view statistics OK
+
+CitizenWebApp:
+	- authentication OK
+	- view unsafe areas OK
+	- view area with many violations OK
+	- view reports history OK
+	- view statistics OK
+
+AuthorityMobileApp:
+	- authentication OK
+	- view unsafe areas OK
+	- view areas with many violations OK
+	- view reports of area of competence OK
+	- view statistics OK
+
+AuthorityWebApp:
+	- authentication OK
+	- view unsafe areas OK
+	- view areas with many violations OK
+	- view reports of area of competence OK
+	- view statistics OK
+	- evaluate reports OK
+	- generate tickets with amount to pay OK
+
+AdministratorDataEditing:
+	- authentication OK
+	- view unsafe areas OK
+	- suggest intervention OK
 
