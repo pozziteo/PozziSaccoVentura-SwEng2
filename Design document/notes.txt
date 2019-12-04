@@ -106,6 +106,7 @@ AuthorityMobileApp:
 AuthorityWebApp:
 	- authentication OK
 	- view unsafe areas OK
+	- send report about accidents
 	- view areas with many violations OK
 	- view reports of area of competence OK
 	- view statistics OK
