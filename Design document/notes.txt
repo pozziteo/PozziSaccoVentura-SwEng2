@@ -118,3 +118,36 @@ AdministratorDataEditing:
 	- view unsafe areas OK
 	- suggest intervention OK
 
+In order to make sure every functional and non-functional requirement, as well as the imposed availability and flexibility constraints, could be fulfilled, we opted to utilize the following architectural styles and patterns for developing the system.
+
+	Object-oriented Design
+
+Developers should be faithful to the five basic concepts of Object Oriented Design, which are listed hereunder:
+- Object/Class: the correspondence between data structures and the functions/methods that interact with the data;
+- Information hiding: the ability to protect some components of the object from external entities;
+- Inheritance: the ability of a class to extend or override functionalities of another class;
+	- Interface: the ability to defer the implementation of a method;
+	- Polymorphism: the ability to replace an object with its sub-objects;
+
+
+	Client/Server Architecture
+
+This architectural style was chosen to ensure that the logic layer of the system, which requires a considerably large amount of computational power, could be deployed on a rack of servers, leaving the client applications thinner and limited to a small number of functionalities.
+
+
+	Three-Tier Physical Architecture
+
+In Three-Tier Architectures, the presentation, application and data layers are split into just as many dedicated machines, meaning: end-user devices, a rack of intermediate servers (also called middle tier) and the DBMS. This kind of architecture guarantees a greater opportunity at reaching the desired levels of flexibility and scalability, as well as security, since the data access is separated from the clients by the middle tier.
+
+
+
+	RESTful Architecture
+
+As far as client and server communication goes, we chose to employ a RESTful API, as its principles apply well to the characteristics and needs of the system to be developed. As a matter of fact, REST:
+	- is a client-server architecture;
+- is stateless: all the information needed to perform a request is always contained in each communication between server and client, and session state information is only needed on the client-side. Hence, if authentication is required in order to access a resource, the client needs to authenticate itself with every request;
+- is cacheable: performance can be improved by caching some information on intermediary devices;
+- provides a uniform interface: each device communicating with the API follows the same rules;
+- is layered: each device can only see the components of the architecture which it’s communicating with and not what lies beyond, meaning each component is independent from the others and can generally be easily replaced or extended.
+
+
